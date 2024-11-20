@@ -1,0 +1,37 @@
+{% extends "flashcards/base.html" %}
+{% block content %}
+<h2>{{ flashcard_set.name }}</h2>
+<ul class="list-group">
+    {% for card in flashcard_set.cards.all %}
+    {% if not card.hidden %}
+    <li class="list-group-item">
+        <strong>Q:</strong> {{ card.question }} <br>
+        <button class="btn btn-primary btn-sm mt-2"
+            onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">
+            Show Answer
+        </button>
+        <div style="display:none;">
+            <strong>A:</strong> {{ card.answer }}
+        </div>
+        <form method="POST" action="{% url 'hide_card' card.id %}">
+            {% csrf_token %}
+            <button class="btn btn-warning btn-sm mt-2">Hide</button>
+        </form>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+<h3>Rate this set:</h3>
+<form method="POST" action="{% url 'rate_set' flashcard_set.id %}">
+    {% csrf_token %}
+    <select name="rating" class="form-select w-25">
+        <option value="1">1 Star</option>
+        <option value="2">2 Stars</option>
+        <option value="3">3 Stars</option>
+        <option value="4">4 Stars</option>
+        <option value="5">5 Stars</option>
+    </select>
+    <button class="btn btn-primary btn-sm mt-2">Submit</button>
+</form>
+<p>Current Rating: {{ flashcard_set.rating }}</p>
+{% endblock %}

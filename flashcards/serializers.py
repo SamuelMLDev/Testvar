@@ -9,14 +9,14 @@ class UserSerializer(serializers.ModelSerializer):
 class FlashcardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flashcard
-        fields = ['id', 'question', 'answer', 'difficulty']
+        fields = ['id', 'question', 'answer', 'difficulty', 'hidden']
 
 class FlashcardSetSerializer(serializers.ModelSerializer):
     cards = FlashcardSerializer(many=True)
 
     class Meta:
         model = FlashcardSet
-        fields = ['id', 'name', 'cards', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'cards', 'created_at', 'updated_at', 'rating']
 
 class CollectionSerializer(serializers.ModelSerializer):
     sets = FlashcardSetSerializer(many=True)

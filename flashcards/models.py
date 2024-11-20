@@ -8,12 +8,14 @@ class Flashcard(models.Model):
     question = models.TextField()
     answer = models.TextField()
     difficulty = models.CharField(max_length=10, choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')])
+    hidden = models.BooleanField(default=False)
 
 class FlashcardSet(models.Model):
     name = models.CharField(max_length=200)
     cards = models.ManyToManyField(Flashcard, related_name="flashcard_sets")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    rating = models.FloatField(default=0.0)
 
 class Collection(models.Model):
     name = models.CharField(max_length=200)
