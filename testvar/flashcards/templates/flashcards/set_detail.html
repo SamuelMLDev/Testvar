@@ -1,0 +1,18 @@
+{% extends "flashcards/base.html" %}
+{% block content %}
+<h2>{{ flashcard_set.name }}</h2>
+<ul class="list-group">
+    {% for card in flashcard_set.cards.all %}
+    <li class="list-group-item">
+        <strong>Q:</strong> {{ card.question }} <br>
+        <button class="btn btn-primary btn-sm mt-2"
+            onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">
+            Show Answer
+        </button>
+        <div style="display:none;">
+            <strong>A:</strong> {{ card.answer }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

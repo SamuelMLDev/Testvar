@@ -1,0 +1,11 @@
+{% extends "flashcards/base.html" %}
+{% block content %}
+<h2>All Flashcard Sets</h2>
+<ul class="list-group">
+    {% for set in sets %}
+    <li class="list-group-item">
+        <a href="{% url 'flashcard_set_detail' set.id %}">{{ set.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
