@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: TestVar - Flashcards API
+  description: A revolutionary REST API for flashcards
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Development server
+paths:
+  /cards/{cardId}/hide:
+    post:
+      summary: "Hide a flashcard by ID"
+      tags:
+        - "Flashcards"
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Flashcard marked as hidden"
+  /sets/{setId}/rate:
+    post:
+      summary: "Rate a flashcard set"
+      tags:
+        - "Flashcard Sets"
+      parameters:
+        - name: setId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  description: "Rating value between 1 and 5"
+      responses:
+        "200":
+          description: "Flashcard set rated successfully"
+        "400":
+          description: "Invalid rating value"
+  # Additional paths for existing functionality
+  /sets:
+    get:
+      summary: "Get all flashcard sets"
+      tags:
+        - "Flashcard Sets"
+      responses:
+        "200":
+          description: "List of flashcard sets"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlashcardSet"
+components:
+  schemas:
+    FlashcardSet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        rating:
+          type: float
+          example: 4.5
+    Flashcard:
+      type: object
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        answer:
+          type: string
+        difficulty:
+          type: string
+          enum:
+            - "easy"
+            - "medium"
+            - "hard"
+        hidden:
+          type: boolean
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
