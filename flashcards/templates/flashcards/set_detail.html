@@ -1,37 +1,43 @@
 {% extends "flashcards/base.html" %}
 {% block content %}
-<h2>{{ flashcard_set.name }}</h2>
-<ul class="list-group">
+<h2 class="mb-4">{{ flashcard_set.name }}</h2>
+<div class="accordion" id="flashcardAccordion">
     {% for card in flashcard_set.cards.all %}
-    {% if not card.hidden %}
-    <li class="list-group-item">
-        <strong>Q:</strong> {{ card.question }} <br>
-        <button class="btn btn-primary btn-sm mt-2"
-            onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">
-            Show Answer
-        </button>
-        <div style="display:none;">
-            <strong>A:</strong> {{ card.answer }}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false"
+                aria-controls="collapse{{ forloop.counter }}">
+                Q: {{ card.question }}
+            </button>
+        </h2>
+        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+            aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#flashcardAccordion">
+            <div class="accordion-body">
+                <strong>A:</strong> {{ card.answer }}
+                <form method="POST" action="{% url 'hide_card' card.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-warning btn-sm mt-3">Hide Card</button>
+                </form>
+            </div>
         </div>
-        <form method="POST" action="{% url 'hide_card' card.id %}">
-            {% csrf_token %}
-            <button class="btn btn-warning btn-sm mt-2">Hide</button>
-        </form>
-    </li>
-    {% endif %}
+    </div>
     {% endfor %}
-</ul>
-<h3>Rate this set:</h3>
+</div>
+
+<h3 class="mt-5">Rate this Set</h3>
 <form method="POST" action="{% url 'rate_set' flashcard_set.id %}">
     {% csrf_token %}
-    <select name="rating" class="form-select w-25">
+    <select name="rating" class="form-select w-25 mb-3">
         <option value="1">1 Star</option>
         <option value="2">2 Stars</option>
         <option value="3">3 Stars</option>
         <option value="4">4 Stars</option>
         <option value="5">5 Stars</option>
     </select>
-    <button class="btn btn-primary btn-sm mt-2">Submit</button>
+    <button type="submit" class="btn btn-success">Submit Rating</button>
 </form>
 <p>Current Rating: {{ flashcard_set.rating }}</p>
+
+<a href="/" class="btn btn-secondary mt-3">Back to Home</a>
 {% endblock %}
