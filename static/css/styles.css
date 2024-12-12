@@ -1,5 +1,18 @@
-.card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+body {
+    padding-bottom: 60px;
+
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.btn-link {
+    text-decoration: none;
+    color: #0d6efd;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
 }
