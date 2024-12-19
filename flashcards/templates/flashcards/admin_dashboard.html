@@ -1,0 +1,14 @@
+{% extends "flashcards/base.html" %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="new_limit" class="form-label">Set Daily Creation Limit:</label>
+        <input type="number" class="form-control" id="new_limit" name="new_limit" value="{{ set_limit.limit }}"
+            required>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Limit</button>
+</form>
+{% endblock %}

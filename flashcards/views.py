@@ -16,7 +16,10 @@ from rest_framework.response import Response
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.permissions import IsAuthenticated
+from .models import SetLimit
+
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -172,3 +175,13 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     permission_classes = [IsAuthenticated]
+
+@staff_member_required
+def admin_dashboard(request):
+    set_limit = SetLimit.objects.first()
+    if request.method == 'POST':
+        new_limit = request.POST.get('new_limit')
+        if new_limit and new_limit.isdigit():
+            set_limit.limit = int(new_limit)
+            set_limit.save()
+    return render(request, 'flashcards/admin_dashboard.html', {'set_limit': set_limit})
